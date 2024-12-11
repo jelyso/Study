@@ -1,0 +1,162 @@
+Week 1: Foundation in Python Programming
+The first week will be about mastering Python basics, working with data types, functions, loops, and conditions. These will be fundamental to both web scraping and double verification tasks.
+
+Day 1: Introduction to Python & Setting Up the Environment
+Goal: Get Python installed and write your first Python program.
+
+
+Topics:
+Install Python (Python 3.x) and set up a development environment (IDE like PyCharm or Visual Studio Code).
+Introduction to Jupyter Notebooks (optional but helpful for experimenting).
+Running your first Python script: print("Hello, World!").
+Python Syntax and Structure:
+Indentation (white spaces and tabs).
+Comments (#).
+Basic Input and Output (input(), print()).
+Practice: Write simple programs like a basic calculator or a program to print your name.
+
+
+Day 2: Variables, Data Types, and Operators
+Goal: Understand how to work with different data types in Python.
+
+Topics:
+Variables: Naming conventions, assigning values.
+Data Types: Strings, Integers, Floats, Booleans.
+Type Conversion: int(), float(), str().
+Operators: Arithmetic (+, -, *, /), Comparison (==, !=, >, <), Logical (and, or, not).
+Practice: Write programs to calculate the area of shapes, check if a number is even/odd, etc.
+
+
+Day 3: Control Flow – Conditional Statements
+Goal: Learn how to make decisions in your code.
+
+Topics:
+if, elif, and else statements.
+Comparison operators (==, >, <, <=, >=).
+Logical operators for compound conditions.
+Practice: Create a program that asks the user for their age and outputs a message based on different age groups (child, teenager, adult).
+
+
+Day 4: Loops (for and while loops)
+Goal: Learn how to repeat tasks efficiently.
+
+Topics:
+for loop: Iterating over lists, ranges, strings.
+while loop: Repeating until a condition is met.
+Nested loops (loop inside loop).
+Break, continue, and pass statements.
+Practice: Write programs that calculate factorials, sum of numbers, or generate multiplication tables.
+
+
+Day 5: Functions & Modules
+Goal: Learn how to create reusable blocks of code.
+
+Topics:
+Defining functions (def), function arguments, and return values.
+Function scope (local vs global variables).
+Importing standard libraries (like math, random).
+Writing your own modules.
+Practice: Write functions to solve specific problems (e.g., check prime numbers, generate Fibonacci series).
+
+
+Day 6: Lists & Dictionaries (Data Structures)
+Goal: Learn how to store and manipulate collections of data.
+
+Topics:
+Lists: Creating, accessing, modifying, and iterating over lists.
+List comprehensions for concise code.
+Dictionaries: Keys and values, adding/updating/removing items.
+Working with list() and dict() functions.
+Practice: Create a simple contact book (with dictionaries) or a list of student grades.
+
+
+Day 7: Review and Project 1
+Goal: Consolidate what you have learned.
+
+Topics:
+Review key concepts from Day 1 to Day 6.
+Simple project to reinforce concepts.
+Project: Write a Python program that takes a list of numbers, removes duplicates, sorts them, and calculates the average. This will involve lists, loops, functions, and basic control flow.
+
+
+
+
+
+
+
+Week 2: Data Scraping and Verification
+In the second week, we will focus on data scraping techniques, the libraries involved, and techniques for verifying and cleaning data.
+
+Day 8: Introduction to Web Scraping & HTTP Requests
+Goal: Learn how to fetch data from websites.
+
+Topics:
+What is web scraping and why it is useful.
+HTTP Protocol: Understanding requests and responses.
+Install and use requests library to make HTTP GET/POST requests.
+Inspecting HTML structure of web pages (using browser developer tools).
+Practice: Make a simple HTTP request to a website and parse the response.
+
+
+Day 9: Parsing HTML with BeautifulSoup
+Goal: Learn how to extract data from HTML.
+Topics:
+Install and use the BeautifulSoup library.
+Parse HTML using BeautifulSoup: find elements (find(), find_all()).
+Extract data from tags and attributes (e.g., links, images).
+Navigating the parse tree.
+Practice: Write a scraper to extract headlines or links from a news website.
+
+
+Day 10: Handling Errors and Data Cleaning
+Goal: Learn how to handle errors and clean data.
+
+Topics:
+Error handling with try, except, and finally.
+Common scraping issues: handling missing data, invalid URLs, etc.
+Cleaning data (removing unwanted characters, trimming spaces).
+Use of regular expressions (re module) for pattern matching.
+Practice: Build a scraper that deals with missing data or malformed HTML.
+
+
+Day 11: Scraping Dynamic Websites (Selenium)
+Goal: Learn how to scrape content from dynamic websites.
+
+Topics:
+Introduction to Selenium and why it is used.
+Automating a browser to interact with JavaScript-driven websites.
+Scraping data after JavaScript content is loaded.
+Working with elements in Selenium (find_element_by_xpath, click(), etc.).
+Practice: Write a scraper that interacts with a website’s buttons and extracts data from a dynamic page.
+
+
+
+
+Day 12: Data Storage and Exporting
+Goal: Learn how to store and export scraped data.
+Topics:
+Saving scraped data into CSV files using csv library.
+Storing data into SQLite databases.
+Working with JSON data: parsing and storing in .json files.
+Practice: Write a script to scrape data from a site and store the results in a CSV or JSON file.
+
+
+Day 13: Double Verification Techniques
+Goal: Learn how to verify data across multiple sources.
+
+Topics:
+What is double verification and why is it important for data quality.
+Comparing data between two websites.
+Using APIs to verify the authenticity of data.
+Handling discrepancies and exceptions.
+Practice: Build a program that scrapes data from two different websites and cross-checks them for consistency.
+
+
+Day 14: Final Project – Web Scraping + Double Verification
+
+Goal: Apply all the skills learned in a real-world project.
+Project: Build a comprehensive scraper that:
+Scrapes data from one or more websites.
+Verifies the accuracy of the data by cross-checking with another source (API or other website).
+Cleans, stores, and possibly exports the data (CSV/JSON).
+Presentation: Prepare a short report on your findings or challenges faced during the scraping process.

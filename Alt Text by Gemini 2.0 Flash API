@@ -1,0 +1,94 @@
+**Automated Alt-Text Generation with Gemini 2.0 Flash API**
+
+The Gemini 2.0 Flash API can be integrated into your inventory system to automatically generate alt text for product images, functioning like a button next to each product. Here's a breakdown of how you can achieve this:
+
+**1. Programmatic Integration:**
+
+*   **API Call:** When a user clicks the alt text generation button (or triggers an automated process), a request would be sent to the Gemini API.
+*   **Input Data:** The request must include the following:
+    *   **Image Data:** The product photo (you would need to encode the image data appropriately, usually as base64 strings, depending on the API requirements).
+    *   **Category Data:** A string indicating the product category.
+    *   **Product Name:** A string with the formal product name.
+ * **Pre-defined Prompts**: You will provide instructions to the model on how you want the text to be.
+*  **Response**: The Gemini API would return the generated alt text.
+
+**2. Prompt Engineering Design:**
+
+You'll need to craft a prompt template that includes placeholders for the variations you need, which can be pre-set up as a variable.
+Here's an example prompt to send to the Gemini API.
+
+```
+"Generate a detailed alt text for a product image. Aim for accessibility describing visual details, materials, style and main use. The category is {Category}. The product name is {ProductName}. Here's the image data: {ImageData}. "
+```
+
+**3. Code Implementation (Illustrative example - Python):**
+
+Below is a simplified example with Python, please check the correct API libraries from Google as well as the specific parameters needed.
+
+```python
+import google.generativeai as genai
+import base64
+import os
+
+# Set your google API credential
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+def generate_alt_text(image_path, category, product_name):
+
+  try:
+   model = genai.GenerativeModel('gemini-pro-vision')
+   # Read the image from the designated path
+   image_bytes = open(image_path, 'rb').read()
+   image_data = base64.b64encode(image_bytes).decode('utf-8')
+
+   prompt = f"""Generate a detailed alt text for a product image. This prodcut is {product_name}, under category of {category}, focus on describing visual details, materials, style and main use of this product whin give image. Use metaphoric language. Optimise for SEO. Within 120 words. Here's the image data:."""
+
+   response = model.generate_content([prompt, image_bytes])
+
+   if  response is not None and hasattr(response, 'text'):
+      generated_alt_text = response.text
+   else:
+        generated_alt_text = "Error generating alt text"
+   return generated_alt_text
+
+  except Exception as e: 
+     print(f"an errror has occured: {e}")
+     return "Error Generating alt text"
+ # Example usage:
+image_path = '/product_image.jpg'  # Image path
+category = 'Face Accessory'
+product_name = 'Metal Jawline Cage'
+
+alt_text = generate_alt_text(image_path, category, product_name)
+print(alt_text)
+```
+
+**4. API Parameter Configuration:**
+   *Image Input type: The Gemini pro vision API accepts Images as byte strings directly if set as an input value, rather than as part of the text.
+   *Text Input type: As shown above, the prompt is created dynamically (as a variable) so each call can send the correct product info (product name, category), pre-defined prompts etc.. and the result will be an alt-text that is relevant to the product itself.
+
+**5. Result: Functional Button:**
+
+*   When a user clicks the "Generate Alt Text" button next to a product in your system, the Python script would send a request through the Gemini API, automatically generates the alt text for the product and stores it in the appropriate field.
+*   The Gemini 2.0 API call does the heavy lifting to take information (such as the images, and product name/category), and converts it to alt-text based on the prompt request instructions.
+
+**Important Considerations:**
+
+*  **API Library and Structure**: Please be sure to use the most up-to-date API libraries from Google to ensure the correct parameters are being sent (such as the input image format) and the response formats are as expected. * Also ensure that the authentication is set correctly when using the API in your program.
+*   **Error Handling:** Implement error handling for API failures or unexpected responses.
+*   **Cost Management:** Monitor token usage as you use Gemini 2.0 flash API.
+* **Security**: Secure your API secrets as you implement it in your code using methods such as "dotenv".
+*   **Testing:** Thoroughly test before rolling it out to ensure optimal results and integration into your workflow/database.
+
+**Precise Summary:**
+
+The Gemini 2.0 Flash API allows for programmatic alt text generation in your inventory system. You accomplish your goal by sending images and related parameters ( such as a category and product name) as an input together with your pre-configured prompt, and you will obtain a response with a text output. This can then be used to populate the alt text of your products.
+
+Let me know if you have more questions or need further clarification.
+  
+   **Cost Calculation (Previous Request Reminder)**
+
+*   **Cost (Image + Prompt Only):** $0.0000765
+*   **Cost (with Option 1 alt-text):** $0.000123
+*   **Cost (with Option 2 alt-text):** $0.000129

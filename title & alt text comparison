@@ -1,0 +1,148 @@
+This guide covers **training the model, handling title & alt text comparison, optimizing inference using input prompts, and pre-training requirements.**  
+
+---
+
+## **1. Training the Model**  
+
+### **🔹 Online Training (Cloud-Based)**  
+**Best for:** High-performance fine-tuning without hardware limitations.  
+**Requires:** GPU cloud services (Google Colab, AWS, RunPod).  
+
+#### **Tools & Services**  
+- Google Colab Pro+ (Affordable, fast access to A100 GPUs)  
+- RunPod (Dedicated A100/H100 GPUs, pay-as-you-go)  
+- AWS Sagemaker (Scalable, for enterprise-level training)  
+
+#### **Steps**  
+1. **Set up GPU instance** on Colab, RunPod, or AWS.  
+2. **Install dependencies:**  
+
+   ```
+   pip install transformers datasets accelerate bitsandbytes
+   ```  
+3. **Load Pre-trained Florence 2 Model:**  
+
+   ```
+   from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+   model_name = "microsoft/florence-2"
+   model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+   tokenizer = AutoTokenizer.from_pretrained(model_name)
+   ```  
+4. **Prepare dataset** (structured with images, alt texts, and titles).  
+5. **Fine-tune the model** using PEFT (Parameter-Efficient Fine-Tuning).  
+6. **Save the fine-tuned model** to Hugging Face or local storage.  
+
+---
+
+### **🔹 Offline Training (Mac & Local GPU Machines)**  
+**Best for:** Training on personal hardware (Mac M-Series, NVIDIA RTX).  
+**Requires:** Minimum **16GB VRAM** (RTX 3090+) or **32GB RAM (M3/M4 Mac).**  
+
+#### **Hardware Recommendations**  
+- **Mac:** Mac Studio (M3 Ultra) / MacBook Pro (M4 Max)  
+- **PC:** RTX 3090 / 4090+ with at least 16GB VRAM  
+
+#### **Steps**  
+1. **Install dependencies:**  
+
+   ```
+   pip install transformers datasets torch accelerate
+   ```  
+2. **Use Metal Backend for Mac (Optimized for Apple Silicon):**  
+
+   ```
+   import torch
+   torch.backends.mps.is_available()  # Should return True
+   ```  
+3. **Fine-tune using LoRA (Lightweight tuning for large models).**  
+4. **Train with mini-batches to prevent memory overflow.**  
+
+---
+
+## **2. Comparing Title & Alt Text (if Present)**  
+**Objective:** If a **title exists**, ensure the alt text **incorporates it naturally**.  
+**Solution:** Match titles with corresponding alt text **during training**.  
+
+```
+def generate_alt_text(title, description):
+    if title:
+        prompt = f"Title: {title} | Description: {description}. Create an alt text that naturally includes the title."
+    else:
+        prompt = f"Description: {description}. Create an alt text."
+
+    inputs = tokenizer(prompt, return_tensors="pt")
+    output = model.generate(**inputs, max_length=50)
+    
+    return tokenizer.decode(output[0], skip_special_tokens=True)
+```
+
+**Example Usage:**  
+```
+print(generate_alt_text("Leather Wallet", "A stylish wallet made from genuine leather."))
+print(generate_alt_text("", "A compact and elegant purse with card slots."))
+```
+
+---
+
+## **3. Things You Can Control with Input Prompts (No Retraining Needed)**  
+Many model behaviors can be **controlled using the input prompt** without additional fine-tuning.  
+
+- **Output Length:**  
+  - `"Generate a short alt text (max 10 words)."`  
+  - `"Write a detailed alt text (around 50 words)."`  
+
+- **Level of Detail:**  
+  - `"Provide a simple alt text."`  
+  - `"Give a highly detailed description."`  
+
+- **Formatting (Bullet Points, HTML, Markdown):**  
+  - `"Format the alt text as bullet points."`  
+  - `"Use HTML format with <p> tags."`  
+
+- **Tone & Style (Casual, Formal, Technical):**  
+  - `"Write in a professional and concise tone."`  
+  - `"Use a friendly and engaging tone."`  
+  - `"Make it sound technical and precise."`  
+
+- **SEO Optimization (Keyword Inclusion):**  
+  - `"Optimize for SEO with keywords: 'eco-friendly, sustainable'."`  
+  - `"Ensure it includes 'wireless, noise-canceling' naturally."`  
+
+- **Language Variants (US, UK, NZ English):**  
+  - `"Write using UK English spelling."`  
+  - `"Ensure US English spelling and phrasing."`  
+
+- **Readability Level (Simple vs. Technical):**  
+  - `"Write in simple language for a 10-year-old to understand."`  
+  - `"Use highly technical terms and precise language."`  
+
+- **Emotion & Sentiment (Exciting, Urgent, Luxury Feel):**  
+  - `"Make it sound exciting and enthusiastic."`  
+  - `"Give it a luxurious and premium feel."`  
+  - `"Make it sound urgent and action-driven."`  
+
+- **Perspective (First-Person, Third-Person, Brand Voice):**  
+  - `"Write from a first-person perspective."`  
+  - `"Write in third-person as if a company is describing it."`  
+  - `"Make it sound like a customer review."`  
+
+---
+
+## **4. Things That Require Pre-training (Fine-tuning Needed)**  
+Some behaviors require model retraining, as they **cannot be controlled via input prompts alone**.  
+
+**1️⃣ Training for a Specific Language (NZ English, Chinese, Spanish, etc.)**  
+✅ Requires additional training data in the target language.  
+✅ Must fine-tune with **high-quality** multilingual datasets.  
+
+**2️⃣ Domain-Specific Knowledge (Medical, Legal, Engineering, etc.)**  
+✅ Requires fine-tuning on **specialized industry datasets.**  
+
+**3️⃣ Avoiding Biases in Model Responses**  
+✅ Requires dataset filtering & **custom reinforcement learning (RLHF).**  
+
+**4️⃣ Banning Certain Words or Phrases**  
+✅ Requires filtering training data OR using a post-processing script.  
+
+

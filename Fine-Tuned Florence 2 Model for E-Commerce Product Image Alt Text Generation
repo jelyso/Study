@@ -1,0 +1,141 @@
+Preparation
+
+Diversity and Representativeness:
+Your dataset should cover the range of products you sell. Even if your product line is relatively uniform, a set of about 1,000 examples helps the model learn the specific language and visual details that matter (e.g. color, material, size, and unique features).
+
+Fine‑Tuning Efficiency:
+Florence 2 is a large pre‑trained model, so fine‑tuning it on a domain-specific dataset doesn’t require millions of images. Research and practical projects in image captioning have shown that fine‑tuning with 500–1,000 images can yield significant improvements in specificity and relevance. However, for robust performance across different product types and to capture subtle variations, 1,000 images is a practical and recommended baseline.
+
+Scalability:
+If you later expand your catalog or find that your initial model isn’t capturing enough nuance, you can always add more images. Starting with 1,000 allows you to pilot the system without overwhelming manual annotation efforts.
+
+Quick Checklist:
+Target Number:
+
+✔ Minimum: ~500 images (if your catalog is very narrow)
+✔ Recommended: ~1,000 images for a balanced, robust model
+✔ Optimal (if possible): 1,000–1,500 images for more diverse product lines
+
+Annotation:
+Ensure each image has a detailed, human‑written alt text focusing on key product features (color, material, style, etc.).
+Data Quality:
+
+Use high‑resolution images and ensure alt texts are clear and consistent.
+
+
+## Training Progress
+
+### 1. Training Online (Cloud-Based)
+
+#### Tools Available
+- **Hugging Face AutoTrain**: No-code platform for fine-tuning models.
+- **Amazon SageMaker Studio Lab**: Free cloud-based environment with GPU support.
+- **RunwayML**: GUI platform for model training and deployment.
+
+#### Steps
+1. **Prepare Dataset**
+   - Collect product images.
+   - Write alt text descriptions in CSV or JSON format.
+   - Ensure filenames in the dataset match the image files.
+
+2. **Sign Up & Create Project**
+   - Hugging Face AutoTrain: [Sign Up](https://huggingface.co/autotrain)
+   - SageMaker Studio Lab: [Sign Up](https://studiolab.sagemaker.aws/)
+   - RunwayML: [Sign Up](https://runwayml.com/)
+
+3. **Upload Dataset**
+   - Upload images and corresponding alt text files.
+   - Configure dataset structure via GUI.
+
+4. **Select Pre-trained Model**
+   - Choose Florence 2 or similar captioning model.
+
+5. **Fine-Tuning Settings**
+   - Choose batch size (Recommended: 4 or 8).
+   - Select number of epochs (Recommended: 3-5).
+   - Adjust learning rate (Default: 3e-5).
+
+6. **Start Training**
+   - Monitor progress through the platform's interface.
+
+7. **Download Model**
+   - Export model in ONNX, CoreML, or PyTorch format.
+
+---
+
+
+
+### 2. Training Offline (Local-Based)
+
+Hardware Checklist (Mac)
+✔ Mac Model: MacBook Pro M4 Pro/Max or Mac Mini M4 Pro
+✔ RAM: Minimum 32GB (16GB might work, but slower)
+✔ Storage: At least 1TB SSD for dataset, model weights, and checkpoints
+✔ Cooling Solution: If using a MacBook, ensure proper ventilation (fine-tuning generates heat)
+
+#### Tools Available
+- **LM Studio (macOS)**: Local GUI for fine-tuning.
+- **Lobe by Microsoft**: Drag-and-drop model training.
+- **PyTorch with Metal Backend**: Script-based fine-tuning.
+
+#### Steps
+1. **Prepare Environment**
+   - Install PyTorch with Metal Backend:
+     ```bash
+     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+     ```
+   - Install Hugging Face Transformers:
+     ```bash
+     pip install transformers datasets
+     ```
+
+2. **Download Base Model**
+   - Use Hugging Face API:
+     ```python
+     from transformers import AutoModel, AutoTokenizer
+     model = AutoModel.from_pretrained("microsoft/florence-2")
+     tokenizer = AutoTokenizer.from_pretrained("microsoft/florence-2")
+     ```
+
+3. **Prepare Dataset**
+   - Organize images and alt text annotations.
+   - Use CSV or JSON format.
+
+4. **Fine-Tuning**
+   - Use LM Studio or PyTorch script.
+   - Example PyTorch Training Loop:
+     ```python
+     from transformers import Trainer, TrainingArguments
+     training_args = TrainingArguments(
+         output_dir="./model_output",
+         per_device_train_batch_size=4,
+         num_train_epochs=3,
+         save_steps=500,
+         learning_rate=3e-5
+     )
+     trainer = Trainer(
+         model=model,
+         args=training_args,
+         train_dataset=dataset
+     )
+     trainer.train()
+     ```
+
+5. **Save Model**
+   - Save the model locally:
+     ```python
+     model.save_pretrained("./fine_tuned_florence2")
+     ```
+
+6. **Deploy Model**
+   - Convert to CoreML:
+     ```python
+     import coremltools as ct
+     model_coreml = ct.convert(model, convert_to="mlprogram")
+     model_coreml.save("florence2_alt_text.mlmodel")
+     ```
+
+
+
+
+
